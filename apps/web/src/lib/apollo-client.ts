@@ -1,28 +1,25 @@
+import { getSchema } from '@/app/api/graphql/schema';
 import { HttpLink } from '@apollo/client';
 import {
   ApolloClient,
   InMemoryCache,
   registerApolloClient,
 } from '@apollo/client-integration-nextjs';
-
-// Use relative URL for same-origin requests (works in both dev and production)
-const getGraphQLUrl = () => {
-  // On the server side, use localhost to avoid deployment protection
-  if (typeof window === 'undefined') {
-    // For server-side requests, always use localhost since the API is in the same app
-    // This avoids Vercel deployment protection issues
-    const port = process.env.PORT || 3000;
-    return `http://localhost:${port}/api/graphql`;
-  }
-  // On the client side, use relative URL (works for same-origin requests)
-  return '/api/graphql';
-};
+import { SchemaLink } from '@apollo/client/link/schema';
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
+  // For server-side, use SchemaLink to execute GraphQL directly (no HTTP)
+  // This avoids Vercel deployment protection and is faster
+  const link =
+    typeof window === 'undefined'
+      ? new SchemaLink({ schema: getSchema() })
+      : new HttpLink({
+          uri: '/api/graphql',
+          credentials: 'same-origin',
+        });
+
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: new HttpLink({
-      uri: getGraphQLUrl(),
-    }),
+    link,
   });
 });

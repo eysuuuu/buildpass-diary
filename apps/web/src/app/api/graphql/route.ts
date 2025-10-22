@@ -10,6 +10,13 @@ const { handleRequest } = createYoga({
 
   // Yoga needs to know how to create a valid Next response
   fetchAPI: { Response },
+
+  // CORS configuration
+  cors: {
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+  },
 });
 
 export async function GET(request: NextRequest) {

@@ -1,6 +1,7 @@
 import { ClientChild } from '@/components/client-child';
 import { SITE_DIARIES } from '@/graphql/queries';
 import { PreloadQuery } from '@/lib/apollo-client';
+import { Analytics } from '@vercel/analytics/next';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -9,6 +10,7 @@ export default function SiteDiaryPage() {
   return (
     <div className="bg-background flex min-h-screen flex-col">
       <main className="flex-1">
+        <Analytics />
         <PreloadQuery query={SITE_DIARIES}>
           <Suspense
             fallback={

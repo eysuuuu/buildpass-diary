@@ -8,10 +8,11 @@ This is a Yarn v1 monorepo containing a mobile app (React Native/Expo) and a web
 
 - Node.js 22
 - Yarn v1 (v1.22.22)
+- MongoDB (local) or MongoDB Atlas account
 - Cocoapods (for iOS development)
 
 ```bash
-brew install node yarn cocoapods
+brew install node yarn cocoapods mongodb-community@7.0
 ```
 
 ### Installing Dependencies
@@ -21,6 +22,36 @@ Run:
 ```bash
 yarn install
 ```
+
+### Setting Up MongoDB
+
+**1. Start MongoDB (if using local installation):**
+
+```bash
+brew services start mongodb-community@7.0
+```
+
+**2. Create `.env.local` in `apps/web/` directory:**
+
+```bash
+# MongoDB Connection
+MONGODB_URI=mongodb://localhost:27017/site-diary
+
+# UploadThing Token
+UPLOADTHING_TOKEN='eyJhcGlLZXkiOiJza19saXZlXzdiZGE5YjliMzRjYmVmOGExYjBiOTE2NjRmMTkzZDRhMzNkNmRmMjRkMGVjZDE2OGVmMWQ3OGI2MjE0YzBhOGEiLCJhcHBJZCI6IngyeG1jejlxbTEiLCJyZWdpb25zIjpbInNlYTEiXX0='
+
+# GraphQL API URL
+NEXT_PUBLIC_API_GRAPHQL_URL=http://localhost:3000/api/graphql
+```
+
+**3. Seed the database with sample data:**
+
+```bash
+cd apps/web
+yarn seed
+```
+
+For detailed MongoDB setup instructions (including MongoDB Atlas), see [MONGODB_SETUP.md](./MONGODB_SETUP.md).
 
 ### Running the Web App (GraphQL API and Next.js Frontend)
 

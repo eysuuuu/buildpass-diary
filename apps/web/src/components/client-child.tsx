@@ -1,5 +1,6 @@
 'use client';
 
+import { SiteDiaryList } from '@/components/site-diary/list';
 import {
   SiteDiariesQuery,
   SiteDiariesQueryVariables,
@@ -13,5 +14,5 @@ export const ClientChild: React.FC = () => {
     SiteDiariesQueryVariables
   >(SITE_DIARIES);
 
-  return <div>{data.siteDiaries?.length}</div>;
+  return <SiteDiaryList diaries={data.siteDiaries || []} />;
 };

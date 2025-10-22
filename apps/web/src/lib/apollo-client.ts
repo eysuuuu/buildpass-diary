@@ -7,17 +7,12 @@ import {
 
 // Use relative URL for same-origin requests (works in both dev and production)
 const getGraphQLUrl = () => {
-  // On the server side, we need to use the full URL
+  // On the server side, use localhost to avoid deployment protection
   if (typeof window === 'undefined') {
-    // In production (Vercel), use VERCEL_URL
-    if (process.env.VERCEL_URL) {
-      return `https://${process.env.VERCEL_URL}/api/graphql`;
-    }
-    // In development, use localhost
-    return (
-      process.env.NEXT_PUBLIC_API_GRAPHQL_URL ||
-      'http://localhost:3000/api/graphql'
-    );
+    // For server-side requests, always use localhost since the API is in the same app
+    // This avoids Vercel deployment protection issues
+    const port = process.env.PORT || 3000;
+    return `http://localhost:${port}/api/graphql`;
   }
   // On the client side, use relative URL (works for same-origin requests)
   return '/api/graphql';

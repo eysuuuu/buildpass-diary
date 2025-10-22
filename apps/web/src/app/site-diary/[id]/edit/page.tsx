@@ -4,6 +4,8 @@ import { getClient } from '@/lib/apollo-client';
 import type { SiteDiaryQuery } from '@/types/__generated__/graphql';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 interface EditSiteDiaryPageProps {
   params: Promise<{
     id: string;

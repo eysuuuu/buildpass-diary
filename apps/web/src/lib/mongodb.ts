@@ -21,6 +21,9 @@ async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      // Optimize for serverless environments like Vercel
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts);
@@ -30,7 +33,10 @@ async function connectDB() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    throw e;
+    console.error('MongoDB connection error:', e);
+    throw new Error(
+      `Failed to connect to MongoDB. Please ensure MONGODB_URI is set correctly. Error: ${e instanceof Error ? e.message : 'Unknown error'}`,
+    );
   }
 
   return cached.conn;
